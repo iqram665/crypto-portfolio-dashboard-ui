@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Premium Crypto & Portfolio Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN (চার্ট দেখানোর জন্য) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0b0a14] text-white font-sans antialiased">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- সাইডবার (Sidebar) -->
+        <div class="w-64 bg-[#121124] border-r border-[#1f1d3a] p-6 hidden md:flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="bg-blue-500 p-2 rounded-lg text-xl font-bold">💎</div>
+                    <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">IQRAM_FI</span>
+                </div>
+                <nav class="space-y-4">
+                    <a href="#" class="flex items-center gap-4 px-4 py-3 bg-blue-600/20 text-blue-400 rounded-xl font-medium transition">📊 Dashboard</a>
+                    <a href="#" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-[#1c1a36] hover:text-white rounded-xl font-medium transition">💼 Portfolio</a>
+                    <a href="#" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-[#1c1a36] hover:text-white rounded-xl font-medium transition">🔄 Transactions</a>
+                    <a href="#" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:bg-[#1c1a36] hover:text-white rounded-xl font-medium transition">⚙️ Settings</a>
+                </nav>
+            </div>
+            <div class="text-xs text-gray-500 text-center border-t border-[#1f1d3a] pt-4">
+                © 2026 IQRAM Graphics & Dev
+            </div>
+        </div>
+
+        <!-- মেইন ড্যাশবোর্ড এরিয়া -->
+        <div class="flex-1 flex flex-col overflow-y-auto p-6 lg:p-10 space-y-8">
+            
+            <!-- টপ হেডার (Top Header) -->
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-bold">Welcome Back, Chief!</h1>
+                    <p class="text-gray-400 text-sm mt-1">Here's your crypto portfolio overview for today.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="bg-[#121124] px-4 py-2 rounded-xl border border-[#1f1d3a] text-sm text-gray-300">
+                        USD / USDT 💵
+                    </div>
+                    <button id="refreshButton" class="px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-400 transition text-sm font-semibold">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- গ্রিড লেআউট: ব্যালেন্স ও চার্ট -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- পোর্টফোলিও কার্ড (Balance Card) -->
+                <div class="bg-gradient-to-br from-[#1d1b3c] to-[#121124] p-6 rounded-3xl border border-[#2b2854] shadow-xl space-y-6 flex flex-col justify-between">
+                    <div>
+                        <span class="text-gray-400 text-sm font-medium uppercase tracking-wider">Total Portfolio Balance</span>
+                        <h2 data-balance class="text-4xl font-extrabold mt-2 tracking-tight">$48,250.80</h2>
+                        <span data-profit class="text-green-400 text-sm font-semibold flex items-center gap-1 mt-2">
+                            🔼 +12.4% <span class="text-gray-400 font-normal">this month</span>
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-[#252347]">
+                        <div>
+                            <span class="text-gray-400 text-xs block">Invested Amount</span>
+                            <span class="font-bold text-lg">$35,000.00</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-400 text-xs block">Total Profit</span>
+                            <span class="font-bold text-lg text-green-400">+$13,250.80</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- লাইভ মার্কেট চার্ট (Market Chart Container) -->
+                <div class="lg:col-span-2 bg-[#121124] p-6 rounded-3xl border border-[#1f1d3a] shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm font-bold text-gray-300">Market Analytics (BTC/USDT)</span>
+                        <span class="px-3 py-1 bg-green-500/10 text-green-400 text-xs font-bold rounded-full">Live Analytics</span>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="cryptoLineChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ক্রিপ্টো এসেটস টেবিল (Crypto Assets List) -->
+            <div class="bg-[#121124] p-6 rounded-3xl border border-[#1f1d3a] shadow-xl">
+                <h3 class="text-lg font-bold mb-6">Your Crypto Assets</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-[#1f1d3a] text-gray-400 text-sm">
+                                <th class="pb-4">Asset</th>
+                                <th class="pb-4">Price</th>
+                                <th class="pb-4">24h Change</th>
+                                <th class="pb-4 text-right">Holdings</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#1f1d3a] text-sm">
+                            <tr>
+                                <td class="py-4 flex items-center gap-3 font-semibold">
+                                    <span class="text-xl">₿</span> Bitcoin <span class="text-xs text-gray-500">BTC</span>
+                                </td>
+                                <td class="py-4 font-medium">$67,430.00</td>
+                                <td class="py-4 text-green-400 font-semibold">+3.82%</td>
+                                <td class="py-4 text-right font-medium">0.45 BTC<br><span class="text-xs text-gray-500">$30,343.50</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 flex items-center gap-3 font-semibold">
+                                    <span class="text-xl">♦️</span> Ethereum <span class="text-xs text-gray-500">ETH</span>
+                                </td>
+                                <td class="py-4 font-medium">$3,520.40</td>
+                                <td class="py-4 text-red-400 font-semibold">-1.15%</td>
+                                <td class="py-4 text-right font-medium">3.20 ETH<br><span class="text-xs text-gray-500">$11,265.28</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 flex items-center gap-3 font-semibold">
+                                    <span class="text-xl">☀️</span> Solana <span class="text-xs text-gray-500">SOL</span>
+                                </td>
+                                <td class="py-4 font-medium">$145.10</td>
+                                <td class="py-4 text-green-400 font-semibold">+8.54%</td>
+                                <td class="py-4 text-right font-medium">45.70 SOL<br><span class="text-xs text-gray-500">$6,631.07</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

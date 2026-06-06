@@ -1,0 +1,20 @@
+/* প্রফেশনাল ডার্ক থিম স্ক্রোলবার */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0b0a14;
+}
+::-webkit-scrollbar-thumb {
+    background: #1f1d3a;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+}
+
+/* কাস্টম নিয়ন গ্লো এফেক্ট */
+canvas {
+    filter: drop-shadow(0px 10px 15px rgba(59, 130, 246, 0.15));
+}
